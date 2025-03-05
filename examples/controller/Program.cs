@@ -1,6 +1,7 @@
 using System.Reflection;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseInMemoryDatabase("controller");
+    options
+    //.UseInMemoryDatabase("controller");
+        .UseNpgsql("Host=localhost;Port=5432;Database=usersdb;Username=postgres;Password=Password123")
+        .AddInterceptors(new DbCommandLoggingInterceptor());
 });
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -59,7 +63,7 @@ if (app.Environment.IsDevelopment())
     }
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -22,6 +22,16 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
 
+    [HttpGet("async")]
+    [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    [EnableQueryAsync<UserDto>]
+    public ActionResult<IEnumerable<UserDto>> GetAsync()
+    {
+        var users = _userService.GetAllUsers();
+
+        return Ok(users);
+    }
+
     // GET: /users/alternative
     [HttpGet("alternative")]
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
